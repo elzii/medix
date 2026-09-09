@@ -4,7 +4,7 @@ export default {
 	app: {
 		name: "Medix",
 		identifier: "dev.medix.electrobun",
-		version: "1.0.4",
+		version: "1.0.5",
 	},
 	release: {
 		baseUrl: "https://github.com/elzii/medix/releases/latest/download",

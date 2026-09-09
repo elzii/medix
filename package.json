@@ -1,23 +1,25 @@
 {
   "name": "medix",
   "productName": "Medix",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "GUI for Redis",
   "scripts": {
-    "build:renderer": "webpack --config webpack.config.cjs --mode production",
-    "build:renderer:dev": "webpack --config webpack.config.cjs --mode development",
-    "build:app": "electrobun build --env=stable",
+    "build:renderer": "./node_modules/.bin/webpack --config webpack.config.cjs --mode production",
+    "build:renderer:dev": "./node_modules/.bin/webpack --config webpack.config.cjs --mode development",
+    "build:app": "npx electrobun build --env=stable",
     "build": "npm run build:renderer && npm run build:app",
-    "dev": "electrobun dev --watch",
-    "start": "electrobun dev"
+    "dev": "npx electrobun dev --watch",
+    "start": "npx electrobun dev"
   },
   "dependencies": {
     "codemirror": "^5.65.21",
+    "electron-context-menu": "^3.6.1",
     "fixed-data-table-contextmenu": "^1.7.2",
     "human-format": "^0.10.1",
     "immutable": "^3.8.4",
     "ioredis": "^5.4.2",
     "jquery": "^3.7.1",
+    "jquery.terminal": "^2.47.0",
     "json-editor": "^0.7.28",
     "jsonlint": "^1.6.3",
     "lodash.clone": "^4.5.0",
