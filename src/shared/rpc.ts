@@ -85,6 +85,14 @@ export type MedisRPCSchema = {
         params: {};
         response: { success: boolean };
       };
+      quitApp: {
+        params: {};
+        response: { success: boolean };
+      };
+      showAbout: {
+        params: {};
+        response: { success: boolean };
+      };
     };
     messages: {};
   }>;

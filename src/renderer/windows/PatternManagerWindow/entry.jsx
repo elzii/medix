@@ -14,6 +14,14 @@ require('../../styles/global.scss')
 
 window.$ = window.jQuery = require('jquery');
 
+window.addEventListener('contextmenu', (e) => {
+  const allowInspect = (e.shiftKey && e.altKey) || 
+    (typeof localStorage !== 'undefined' && localStorage.getItem('medis:enable_inspect') === 'true');
+  if (!allowInspect) {
+    e.preventDefault();
+  }
+}, true);
+
 ipcRenderer.on('action', (evt, action) => {
   if (type === 'delInstance') {
     remote.getCurrentWindow().close()
