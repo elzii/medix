@@ -1,1 +1,7 @@
+node_modules
+dist
+build
+artifacts
+.cottontail-tmp
 .DS_Store
+icon.iconset

@@ -1,0 +1,22 @@
+{
+  "name": "medis",
+  "productName": "Medis",
+  "version": "1.0.3",
+  "description": "GUI for Redis",
+  "scripts": {
+    "build:renderer": "webpack --config webpack.config.cjs --mode production",
+    "build:renderer:dev": "webpack --config webpack.config.cjs --mode development",
+    "build:app": "hutch electrobun build --env=stable",
+    "build": "npm run build:renderer && npm run build:app",
+    "dev": "hutch electrobun dev --watch",
+    "start": "hutch electrobun dev"
+  },
+  "dependencies": {
+    "ioredis": "^5.4.2",
+    "ssh2": "^1.16.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.7.3"
+  }
+}
