@@ -7,8 +7,10 @@
   --bg-input: #1b1b1e;
   --bg-hover: rgba(255, 255, 255, 0.07);
   --bg-active: rgba(255, 255, 255, 0.12);
+
+  // Muted, subtle border dividers (no bright whites)
   --border-color: rgba(255, 255, 255, 0.08);
-  --border-subtle: rgba(255, 255, 255, 0.14);
+  --border-subtle: rgba(255, 255, 255, 0.08);
 
   --accent: #0a84ff;
   --accent-hover: #0077ed;
@@ -25,6 +27,8 @@
 
   --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", sans-serif;
   --font-mono: ui-monospace, "SF Mono", Menlo, Monaco, Consolas, monospace;
+
+  color-scheme: dark;
 }
 
 html, body {
@@ -35,6 +39,7 @@ html, body {
   padding: 0;
   overflow: hidden;
   -webkit-font-smoothing: antialiased;
+  color-scheme: dark !important;
 }
 
 .window {
@@ -45,7 +50,7 @@ html, body {
   height: 100vh;
 }
 
-// Custom subtle macOS dark scrollbar
+// Subtle macOS dark scrollbar
 ::-webkit-scrollbar {
   width: 7px;
   height: 7px;
@@ -54,40 +59,53 @@ html, body {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.16);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.3);
 }
 
-// Panes & Sidebar layout
-.sidebar, .pane.sidebar {
-  background: var(--bg-sidebar) !important;
-  border-right: 1px solid var(--border-color) !important;
-  color: var(--text-primary) !important;
-}
-
+// Panes & Sidebar layout — eliminate all bright white borders from Photon
 .pane {
   background: var(--bg-content) !important;
   color: var(--text-primary) !important;
+  border-left: none !important;
 }
 
 .pane-group {
   background: var(--bg-window) !important;
 }
 
-// Split pane Resizer
+.sidebar, .pane.sidebar, .pane-sm {
+  background: var(--bg-sidebar) !important;
+  border-right: 1px solid var(--border-color) !important;
+  border-left: none !important;
+  color: var(--text-primary) !important;
+}
+
+// Split pane Resizer — subtle muted 1px line, no bright white
 .Resizer {
-  background: var(--border-color) !important;
   opacity: 1 !important;
-  width: 1px !important;
-  cursor: col-resize;
-  transition: background 0.15s ease;
   z-index: 10;
+  background: transparent !important;
+}
+
+.Resizer.vertical {
+  width: 6px !important;
+  margin: 0 -3px !important;
+  border-left: 1px solid var(--border-color) !important;
+  border-right: none !important;
+  cursor: col-resize !important;
+  transition: border-color 0.15s ease;
   &:hover {
-    background: var(--accent) !important;
+    border-color: var(--accent) !important;
   }
+}
+
+.SplitPane > .pane {
+  border-left: none !important;
+  border-right: none !important;
 }
 
 // Top Instance Tabs (#tabGroupWrapper, .tab-group, .tab-item)
@@ -97,6 +115,7 @@ html, body {
 
   .tab-group {
     background: transparent !important;
+    border-top: none !important;
     border-bottom: none !important;
     height: 36px !important;
     padding: 4px 6px 0 6px !important;
@@ -243,7 +262,7 @@ html, body {
   }
 }
 
-// FixedDataTable dark theme - Fully override Facebook's white gradients
+// FixedDataTable dark theme — override white backgrounds & borders
 .public_fixedDataTable_main {
   background: var(--bg-sidebar) !important;
   border: none !important;
@@ -267,6 +286,11 @@ html, body {
     color: var(--text-muted) !important;
     line-height: 24px !important;
   }
+}
+
+.public_fixedDataTable_hasBottomBorder,
+.public_fixedDataTable_footer {
+  border-color: var(--border-color) !important;
 }
 
 .public_fixedDataTable_topShadow,
@@ -422,7 +446,7 @@ html, body {
   }
 }
 
-// CodeMirror Dark Theme (Monokai / Charcoal style from Image 1)
+// CodeMirror Dark Theme & Active CursorLine Fix
 .Editor {
   background: var(--bg-content) !important;
 
@@ -456,6 +480,15 @@ html, body {
     border-left: 2px solid var(--accent) !important;
   }
 
+  // Active line cursorline — 10% opacity white, elegant and subtle
+  .CodeMirror-activeline-background {
+    background: rgba(255, 255, 255, 0.08) !important;
+  }
+
+  .CodeMirror-activeline .CodeMirror-linenumber {
+    color: #f5f5f7 !important;
+  }
+
   .CodeMirror-selected {
     background: rgba(10, 132, 255, 0.3) !important;
   }
@@ -469,20 +502,6 @@ html, body {
   .cm-variable { color: #f5f5f7 !important; }
   .cm-def { color: #ffd60a !important; }
   .cm-punctuation, .cm-bracket { color: #a1a1a6 !important; }
-
-  // Operation panel & footer buttons
-  .mode-selector, .wrap-selector {
-    color: var(--text-secondary);
-    font-size: 12px;
-    select {
-      background: var(--bg-card);
-      border: 1px solid var(--border-subtle);
-      border-radius: 5px;
-      color: var(--text-primary);
-      padding: 3px 8px;
-      font-size: 11px;
-    }
-  }
 
   button {
     background: var(--bg-card) !important;
@@ -502,10 +521,81 @@ html, body {
   }
 }
 
-// Toolbars and Footers
+// Dropdown Selectors — Dark, Readable, and Styled (Fixes bright white dropdowns)
+select,
+select.mode-selector,
+.mode-selector,
+select.form-control,
+.toolbar-footer select {
+  color-scheme: dark !important;
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  background-color: #2c2c30 !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 16 16' fill='none' stroke='%2398989d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='4 6 8 10 12 6'%3E%3C/polyline%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 8px center !important;
+  color: #f5f5f7 !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: 6px !important;
+  padding: 3px 24px 3px 8px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 18px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important;
+  cursor: pointer !important;
+  outline: none !important;
+
+  &:hover {
+    background-color: #38383e !important;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+    color: #ffffff !important;
+  }
+
+  &:focus {
+    border-color: var(--accent) !important;
+    box-shadow: 0 0 0 2px rgba(10, 132, 255, 0.25) !important;
+  }
+
+  option {
+    background-color: #242428 !important;
+    color: #f5f5f7 !important;
+    padding: 4px 8px !important;
+  }
+}
+
+// Wrapping checkbox in editor
+.wrap-selector {
+  color: var(--text-secondary) !important;
+  font-size: 12px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 5px !important;
+  cursor: pointer !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+
+  input[type="checkbox"] {
+    accent-color: var(--accent) !important;
+    cursor: pointer !important;
+    margin: 0 !important;
+  }
+
+  span {
+    color: var(--text-secondary) !important;
+    &:hover {
+      color: var(--text-primary) !important;
+    }
+  }
+}
+
+// Toolbars and Footers — eliminate bright white inset shadow and 1px border
+.toolbar,
 .toolbar-footer {
   background: var(--bg-header) !important;
+  background-image: none !important;
+  box-shadow: none !important;
   border-top: 1px solid var(--border-color) !important;
+  border-bottom: none !important;
   color: var(--text-secondary) !important;
   font-size: 11px !important;
   padding: 4px 10px !important;
@@ -513,17 +603,10 @@ html, body {
   align-items: center !important;
   height: 28px !important;
 
-  select {
-    background: var(--bg-input) !important;
-    border: 1px solid var(--border-subtle) !important;
-    border-radius: 4px !important;
-    color: var(--text-primary) !important;
-    outline: none;
-  }
-
   button {
     background: var(--bg-card) !important;
     border: 1px solid var(--border-subtle) !important;
+    box-shadow: none !important;
     border-radius: 4px !important;
     color: var(--text-secondary) !important;
     cursor: pointer !important;
@@ -549,7 +632,7 @@ html, body {
     color: var(--text-secondary) !important;
     font-size: 12px !important;
   }
-  input[type="text"], input[type="number"], input[type="password"], select, textarea {
+  input[type="text"], input[type="number"], input[type="password"], textarea {
     background: var(--bg-input) !important;
     border: 1px solid var(--border-subtle) !important;
     border-radius: 6px !important;
@@ -642,7 +725,7 @@ html, body {
 
   .Modal__content {
     background: #252529 !important;
-    border: 1px solid rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid var(--border-color) !important;
     border-radius: 0 0 10px 10px !important;
     box-shadow: 0 20px 48px rgba(0, 0, 0, 0.6) !important;
     color: #f5f5f7 !important;

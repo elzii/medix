@@ -4,7 +4,7 @@
 }
 
 .tab-group {
-  background: #b3b1b3;
+  background: transparent;
 }
 
 .nav-group-item:active {
@@ -16,29 +16,22 @@
 }
 
 .nav-group-item.active:active {
-  background-color: #dcdfe1 !important;
+  background-color: var(--accent) !important;
 }
 
 .window {
-  background: #ececec !important;
+  background: var(--bg-window) !important;
 }
 
 .toolbar-footer {
   button {
-    width: 30px;
     border: none;
-    border-right: 1px solid #c2c0c2;
-    box-shadow: 1px 0px 0px 0px rgba(255, 255, 255, 0.4);
     background: transparent;
-    font-size: 18px;
-    line-height: 19px;
+    font-size: 14px;
     opacity: 0.8;
-    &:active {
-      background-color: #dcdfe1;
-    }
   }
 }
 
 button:focus {
-  outline:0;
+  outline: 0;
 }
