@@ -12,7 +12,7 @@ import * as actions from 'Redux/actions'
 require('../../styles/global.scss')
 
 window.$ = window.jQuery = require('jquery');
-window.Buffer = global.Buffer;
+window.Buffer = window.Buffer || Buffer;
 
 ipcRenderer.on('action', (evt, action) => {
   if ($('.Modal').length && action.indexOf('Instance') !== -1) {
