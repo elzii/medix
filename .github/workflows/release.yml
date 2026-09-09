@@ -47,12 +47,18 @@ jobs:
         run: |
           npx electrobun build --env=stable
 
+      - name: Create ZIP archive of application bundle
+        run: |
+          cd build/stable-macos-arm64
+          ditto -c -k --keepParent Medix.app ../../artifacts/Medix-macos-arm64.zip
+          cd ../..
+
       - name: Verify build artifacts
         run: |
           echo "=== Generated Artifacts ==="
-          ls -la artifacts/
+          ls -lh artifacts/
           echo "=== Stable Build Output ==="
-          ls -la build/stable-macos-arm64/
+          ls -lh build/stable-macos-arm64/
 
       - name: Publish GitHub Release
         uses: softprops/action-gh-release@v2
