@@ -397,7 +397,7 @@ class KeyList extends React.Component {
         >
         <Column
           header="type"
-          width={40}
+          width={66}
           cell={({rowIndex}) => {
             const item = this.state.keys[rowIndex]
             if (!item) {
@@ -408,7 +408,8 @@ class KeyList extends React.Component {
               return ''
             }
             const type = cellData === 'string' ? 'str' : cellData
-            return <span className={`key-type ${type}`}>{type}</span>
+            const displayLabel = type === 'str' ? 'STRING' : type.toUpperCase()
+            return <span className={`key-type ${type}`}>{displayLabel}</span>
           }}
           />
         <Column

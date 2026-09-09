@@ -94,6 +94,7 @@ module.exports = {
     alias: {
       Redux: resolve(__dirname, 'src/renderer/redux/'),
       Utils: resolve(__dirname, 'src/renderer/utils'),
+      Icons: resolve(__dirname, 'src/renderer/icons.jsx'),
       electron: resolve(__dirname, 'src/renderer/electron-shim.js'),
       '@electron/remote': resolve(__dirname, 'src/renderer/electron-shim.js'),
     },

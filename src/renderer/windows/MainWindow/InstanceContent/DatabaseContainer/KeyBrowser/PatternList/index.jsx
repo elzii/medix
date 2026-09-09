@@ -2,6 +2,7 @@
 
 import React from 'react'
 import {ipcRenderer} from 'electron'
+import {SearchIcon, ChevronDownIcon} from 'Icons'
 
 require('./index.scss')
 
@@ -30,7 +31,7 @@ class PatternList extends React.Component {
 
   render() {
     return (<div className="pattern-input">
-      <span className="icon icon-search"/>
+      <span className="search-icon"><SearchIcon size={13} /></span>
       <input
         type="search"
         className="form-control"
@@ -41,11 +42,13 @@ class PatternList extends React.Component {
         }}
         />
       <span
-        className={'js-pattern-dropdown icon icon-down-open' + (this.state.patternDropdown ? ' is-active' : '')}
+        className={'js-pattern-dropdown dropdown-trigger' + (this.state.patternDropdown ? ' is-active' : '')}
         onClick={() => {
           this.setState({patternDropdown: !this.state.patternDropdown})
         }}
-        />
+        >
+        <ChevronDownIcon size={10} />
+      </span>
       <div
         className={'js-pattern-dropdown pattern-dropdown' + (this.state.patternDropdown ? ' is-active' : '')}
         style={{maxHeight: this.props.height}}

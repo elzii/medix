@@ -1,6 +1,7 @@
 'use strict'
 
 import React, {memo} from 'react'
+import {DocumentIcon, TerminalIcon, GearIcon} from 'Icons'
 require('./index.scss')
 
 const TABS = ['Content', 'Terminal', 'Config']
@@ -8,11 +9,11 @@ const TABS = ['Content', 'Terminal', 'Config']
 function renderTabIcon(tab) {
   switch (tab) {
     case 'Content':
-      return <span className="icon icon-book" />
+      return <DocumentIcon size={13} style={{marginRight: 6}} />
     case 'Terminal':
-      return <span className="icon icon-window" />
+      return <TerminalIcon size={13} style={{marginRight: 6}} />
     case 'Config':
-      return <span className="icon icon-cog" />
+      return <GearIcon size={13} style={{marginRight: 6}} />
   }
 }
 

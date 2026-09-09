@@ -2,6 +2,7 @@
 
 import React from 'react'
 import Sortable from 'sortablejs'
+import {LightningIcon, ServerIcon, PlusIcon, CloseIcon} from 'Icons'
 
 class Favorite extends React.PureComponent {
   constructor() {
@@ -75,7 +76,7 @@ class Favorite extends React.PureComponent {
           onClick={this.onClick.bind(this, -1)}
           onDoubleClick={this.onDoubleClick.bind(this, -1)}
           >
-          <span className="icon icon-flash"/>
+          <LightningIcon size={14} color="#ffd60a" style={{marginRight: 6}} />
           QUICK CONNECT
         </a>
         <h5 className="nav-group-title">FAVORITES</h5>
@@ -87,7 +88,7 @@ class Favorite extends React.PureComponent {
               onClick={this.onClick.bind(this, index)}
               onDoubleClick={this.onDoubleClick.bind(this, index)}
               >
-              <span className="icon icon-home"/>
+              <ServerIcon size={14} color="currentColor" style={{marginRight: 6}} />
               <span>{favorite.get('name')}</span>
             </a>)
           })
@@ -100,7 +101,9 @@ class Favorite extends React.PureComponent {
           // TODO: auto select
           // this.select(favorite);
           }}
-          >+</button>
+          title="Add bookmark"
+          style={{padding: '2px 8px', display: 'inline-flex', alignItems: 'center'}}
+          ><PlusIcon size={10} /></button>
         <button
           onClick={
           () => {
@@ -119,7 +122,9 @@ class Favorite extends React.PureComponent {
             })
           }
         }
-          >-</button>
+          title="Delete bookmark"
+          style={{padding: '2px 8px', display: 'inline-flex', alignItems: 'center', marginLeft: 4}}
+          ><CloseIcon size={10} /></button>
       </footer>
     </div>)
   }
