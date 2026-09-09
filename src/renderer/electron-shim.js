@@ -170,13 +170,13 @@ if (typeof window !== 'undefined') {
 
   // Global contextmenu listener in capture phase:
   // Suppresses WebKit's native "Reload Page" / "Inspect Element" menu by default.
-  // Developers can hold Shift+Option or run localStorage.setItem('medis:enable_inspect', 'true') to allow it.
+  // Developers can hold Shift+Option or run localStorage.setItem('medix:enable_inspect', 'true') to allow it.
   window.addEventListener('contextmenu', (e) => {
     window.__lastMouseX = e.clientX;
     window.__lastMouseY = e.clientY;
 
     const allowInspect = (e.shiftKey && e.altKey) || 
-      (typeof localStorage !== 'undefined' && localStorage.getItem('medis:enable_inspect') === 'true');
+      (typeof localStorage !== 'undefined' && localStorage.getItem('medix:enable_inspect') === 'true');
 
     if (!allowInspect) {
       e.preventDefault();

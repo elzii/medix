@@ -1,7 +1,7 @@
-import { ApplicationMenu, BrowserView, BrowserWindow } from "electrobun/main";
+import { ApplicationMenu, BrowserView, BrowserWindow, Updater } from "electrobun/main";
 import { execFile } from "child_process";
 import { promisify } from "util";
-import type { MedisRPCSchema } from "../shared/rpc";
+import type { MedixRPCSchema } from "../shared/rpc";
 import { redisManager } from "./redisManager";
 
 const execFileAsync = promisify(execFile);
@@ -10,9 +10,41 @@ const windows = new Map<number, BrowserWindow>();
 
 function showAboutDialog() {
   const script =
-    'display alert "Medis" message "Refactored with 💛 in an Electrobun Oven\n\nANAGRAM GROUP, LLC" as informational buttons {"OK"} default button "OK"';
+    'display alert "Medix" message "Refactored with 💛 in an Electrobun Oven\n\nANAGRAM GROUP, LLC" as informational buttons {"OK"} default button "OK"';
   execFileAsync("osascript", ["-e", script]).catch(() => {});
 }
+
+async function checkForUpdates(manual = true) {
+  try {
+    const info = await Updater.checkForUpdate();
+    if (info.updateAvailable) {
+      const script = `display dialog "A new version of Medix (${info.version || "update"}) is available. Would you like to download and install it now?" with title "Medix Update" buttons {"Later", "Update & Restart"} default button "Update & Restart" with icon note`;
+      const { stdout } = await execFileAsync("osascript", ["-e", script]);
+      if (stdout.includes("Update & Restart")) {
+        execFileAsync("osascript", [
+          "-e",
+          'display notification "Downloading and applying Medix update..." with title "Medix Update"',
+        ]).catch(() => {});
+        await Updater.downloadUpdate();
+        await Updater.applyUpdate();
+      }
+    } else if (manual) {
+      const script =
+        'display alert "Medix is Up to Date" message "You are currently running the latest version." as informational buttons {"OK"} default button "OK"';
+      await execFileAsync("osascript", ["-e", script]);
+    }
+  } catch (error: any) {
+    if (manual) {
+      const msg = (error?.message || "Failed to check for updates.").replace(/"/g, '\\"');
+      const script = `display alert "Update Check Failed" message "${msg}" as warning buttons {"OK"} default button "OK"`;
+      await execFileAsync("osascript", ["-e", script]).catch(() => {});
+    }
+  }
+}
+
+Updater.onStatusChange((entry) => {
+  console.log(`[Updater] ${entry.status}: ${entry.message}`);
+});
 
 function broadcastAction(action: string, args?: any) {
   for (const win of windows.values()) {
@@ -23,7 +55,7 @@ function broadcastAction(action: string, args?: any) {
 }
 
 function createNewWindow(type = "main", arg?: any) {
-  const title = type === "patternManager" ? "Manage Patterns" : "Medis";
+  const title = type === "patternManager" ? "Manage Patterns" : "Medix";
   const width = type === "patternManager" ? 600 : 1000;
   const height = type === "patternManager" ? 350 : 650;
   const html = type === "patternManager" ? "patternManager.html" : "main.html";
@@ -44,7 +76,7 @@ function createNewWindow(type = "main", arg?: any) {
   return win;
 }
 
-const rpc = BrowserView.defineRPC<MedisRPCSchema>({
+const rpc = BrowserView.defineRPC<MedixRPCSchema>({
   maxRequestTime: 30000,
   handlers: {
     requests: {
@@ -111,6 +143,11 @@ const rpc = BrowserView.defineRPC<MedisRPCSchema>({
         showAboutDialog();
         return { success: true };
       },
+
+      checkForUpdates: async () => {
+        checkForUpdates(true);
+        return { success: true };
+      },
     },
     messages: {},
   },
@@ -118,15 +155,19 @@ const rpc = BrowserView.defineRPC<MedisRPCSchema>({
 
 ApplicationMenu.setApplicationMenu([
   {
-    label: "Medis",
+    label: "Medix",
     submenu: [
       {
-        label: "About Medis",
+        label: "About Medix",
         action: "about",
+      },
+      {
+        label: "Check for Updates...",
+        action: "checkForUpdates",
       },
       { type: "separator" },
       {
-        label: "Hide Medis",
+        label: "Hide Medix",
         role: "hide",
         accelerator: "Cmd+H",
       },
@@ -141,7 +182,7 @@ ApplicationMenu.setApplicationMenu([
       },
       { type: "separator" },
       {
-        label: "Quit Medis",
+        label: "Quit Medix",
         action: "quit",
         role: "quit",
         accelerator: "Cmd+Q",
@@ -193,8 +234,12 @@ ApplicationMenu.setApplicationMenu([
     label: "Help",
     submenu: [
       {
-        label: "About Medis",
+        label: "About Medix",
         action: "about",
+      },
+      {
+        label: "Check for Updates...",
+        action: "checkForUpdates",
       },
     ],
   },
@@ -206,6 +251,8 @@ ApplicationMenu.on("application-menu-clicked", (event: any) => {
 
   if (action === "about") {
     showAboutDialog();
+  } else if (action === "checkForUpdates") {
+    checkForUpdates(true);
   } else if (action === "quit") {
     process.exit(0);
   } else if (action === "newWindow") {
@@ -219,4 +266,4 @@ ApplicationMenu.on("application-menu-clicked", (event: any) => {
 
 const mainWindow = createNewWindow("main");
 
-console.log("Medis Electrobun main process initialized successfully with ApplicationMenu.");
+console.log("Medix Electrobun main process initialized successfully with ApplicationMenu.");

@@ -16,7 +16,7 @@ window.Buffer = window.Buffer || Buffer;
 
 window.addEventListener('contextmenu', (e) => {
   const allowInspect = (e.shiftKey && e.altKey) || 
-    (typeof localStorage !== 'undefined' && localStorage.getItem('medis:enable_inspect') === 'true');
+    (typeof localStorage !== 'undefined' && localStorage.getItem('medix:enable_inspect') === 'true');
   if (!allowInspect) {
     e.preventDefault();
   }

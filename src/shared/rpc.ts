@@ -20,7 +20,7 @@ export interface RedisConnectConfig {
   [key: string]: any;
 }
 
-export type MedisRPCSchema = {
+export type MedixRPCSchema = {
   bun: RPCSchema<{
     requests: {
       connectToRedis: {
@@ -93,6 +93,10 @@ export type MedisRPCSchema = {
         params: {};
         response: { success: boolean };
       };
+      checkForUpdates: {
+        params: {};
+        response: { success: boolean };
+      };
     };
     messages: {};
   }>;
@@ -111,3 +115,6 @@ export type MedisRPCSchema = {
     };
   }>;
 };
+
+
+

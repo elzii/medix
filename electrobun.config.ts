@@ -2,9 +2,9 @@ import type { ElectrobunConfig } from "electrobun";
 
 export default {
 	app: {
-		name: "Medis",
-		identifier: "dev.medis.electrobun",
-		version: "1.0.3",
+		name: "Medix",
+		identifier: "dev.medix.electrobun",
+		version: "1.0.4",
 	},
 	release: {
 		baseUrl: "https://github.com/elzii/medix/releases/latest/download",

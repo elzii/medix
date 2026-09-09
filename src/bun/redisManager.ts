@@ -167,7 +167,7 @@ class RedisManager {
           sshClient?.end();
           return {
             success: false,
-            error: "Medis only supports Redis >= 2.8 because servers older than 2.8 don't support SCAN command.",
+            error: "Medix only supports Redis >= 2.8 because servers older than 2.8 don't support SCAN command.",
           };
         }
       }

@@ -1,0 +1,65 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version tag to release (e.g. v1.0.4)'
+        required: false
+        default: ''
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Build & Publish macOS Release
+    runs-on: macos-14 # Apple Silicon M1/arm64 runner
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Build Webpack renderer
+        run: |
+          npm run build:renderer
+
+      - name: Package Electrobun stable app & generate OTA update assets
+        run: |
+          npx electrobun build --env=stable
+
+      - name: Verify build artifacts
+        run: |
+          echo "=== Generated Artifacts ==="
+          ls -la artifacts/
+          echo "=== Stable Build Output ==="
+          ls -la build/stable-macos-arm64/
+
+      - name: Publish GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            artifacts/*
+          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || inputs.version }}
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

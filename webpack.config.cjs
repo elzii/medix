@@ -71,7 +71,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Medis',
+      title: 'Medix',
       chunks: ['main'],
       filename: 'main.html',
     }),

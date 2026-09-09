@@ -12,13 +12,14 @@ This document outlines the transition of the Electrobun port from the legacy nes
 
 - **Repository**: Standalone Git repository at `/Users/azizzo/Source/NODE/medix`
 - **Active Branch**: `main` (clean working tree, fully committed)
-- **App Bundle**: `build/stable-macos-arm64/Medis.app` (~18 MB, 96% smaller than original Electron app)
+- **App Bundle**: `build/stable-macos-arm64/Medix.app` (~18 MB, 96% smaller than original Electron app)
 - **Tech Stack**:
   - **Main Process**: [Bun](https://bun.sh) with native Zig launcher (Cottontail)
   - **Webview**: macOS Native WebKit (`WKWebView`)
   - **UI Framework**: React 16 + Redux + CodeMirror 5
-  - **Styling**: Medis 2 Dark macOS Theme (`src/renderer/styles/dark-theme.scss`)
-  - **Build Tooling**: Webpack 5 + Hutch (Electrobun CLI)
+  - **Styling**: Modern Dark macOS Theme (`src/renderer/styles/dark-theme.scss`)
+  - **Packaging**: Zero Electron runtime — uses system WebKit via native Electrobun bridge.
+
 
 ---
 
@@ -34,17 +35,15 @@ code .
 
 ---
 
-## 3. Daily Workflow Commands
-
-All commands should now be run directly from `/Users/azizzo/Source/NODE/medix`:
+## Quick Reference Commands
 
 | Command | Purpose |
 | :--- | :--- |
-| `npm run dev` | Starts Electrobun in development / watch mode without packaging `.tar.zst` |
-| `npm run build` | Compiles Webpack renderer and packages stable release (`build/stable-macos-arm64/Medis.app` + DMG) |
-| `npm run build:renderer` | Compiles only the frontend assets into `dist/renderer/` |
-| `npm run build:app` | Runs Hutch to package the app bundle |
-| `open build/stable-macos-arm64/Medis.app` | Launches the built standalone macOS application |
+| `npm run dev` | Starts hot development mode (Webpack watch + Electrobun dev runner) |
+| `npm run build:renderer` | Compiles Webpack bundles to `dist/renderer/` |
+| `npm run build:app` | Builds standalone macOS application and update payload via Hutch |
+| `npm run build` | Compiles Webpack renderer and packages stable release (`build/stable-macos-arm64/Medix.app` + DMG) |
+| `open build/stable-macos-arm64/Medix.app` | Launches the built standalone macOS application |
 
 ---
 
