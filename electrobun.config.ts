@@ -6,6 +6,10 @@ export default {
 		identifier: "dev.medis.electrobun",
 		version: "1.0.3",
 	},
+	release: {
+		baseUrl: "https://github.com/elzii/medix/releases/latest/download",
+		generatePatch: true,
+	},
 	build: {
 		mainProcess: "cottontail",
 		cottontail: {
