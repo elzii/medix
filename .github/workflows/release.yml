@@ -47,9 +47,20 @@ jobs:
         run: |
           npx electrobun build --env=stable
 
-      - name: Ad-hoc code sign application bundle
+      - name: Pre-extract application bundle for standalone distribution
+        run: |
+          ELECTROBUN_INSTALLER_UI_AUTOCLOSE=true ./build/stable-macos-arm64/Medix.app/Contents/MacOS/launcher --bootstrap-install || true
+          rm -rf build/stable-macos-arm64/Medix.app/Contents/MacOS/.cottontail-tmp
+
+      - name: Ad-hoc code sign application bundle and DMG
         run: |
           codesign --force --deep -s - build/stable-macos-arm64/Medix.app
+          for dmg in artifacts/*.dmg build/stable-macos-arm64/*.dmg; do
+            if [ -f "$dmg" ]; then
+              echo "Signing disk image: $dmg"
+              codesign --force -s - "$dmg"
+            fi
+          done
 
       - name: Create ZIP archive of application bundle
         run: |
